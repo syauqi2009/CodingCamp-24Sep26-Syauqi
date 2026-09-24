@@ -1,0 +1,887 @@
+﻿/* =============================================================
+   Expense & Budget Visualizer — style.css
+   =============================================================
+   Table of Contents:
+   1.  Variables (Light & Dark Theme)
+   2.  Reset & Base
+   3.  Typography
+   4.  Layout
+   5.  Header
+   6.  Dashboard
+   7.  Form & Inputs
+   8.  Custom Category
+   9.  Chart
+   10. Transaction History
+   11. Sort Controls
+   12. Empty States
+   13. Buttons
+   14. Footer
+   15. Utilities
+   16. Responsive — Tablet (768px)
+   17. Responsive — Desktop (1024px+)
+   18. Responsive — Wide (1440px+)
+   19. Dark Mode
+   ============================================================= */
+/* =============================================================
+   1. VARIABLES — LIGHT THEME (default)
+   ============================================================= */
+:root {
+  /* Brand */
+  --primary-color:        #4f6ef7;
+  --primary-hover:        #3a57e8;
+  --primary-active:       #2d47d4;
+  --danger-color:         #e05252;
+  --danger-hover:         #c93e3e;
+  /* Background layers */
+  --bg-color:             #f5f6fa;
+  --surface-color:        #ffffff;
+  --surface-alt:          #f0f2f9;
+  /* Text */
+  --text-color:           #1a1d2e;
+  --text-secondary:       #5a5f7a;
+  --muted-text-color:     #9399b2;
+  /* Border */
+  --border-color:         #e2e5f0;
+  --border-focus:         #4f6ef7;
+  /* Balance card accents */
+  --card-initial-bg:      #eef1fd;
+  --card-initial-accent:  #4f6ef7;
+  --card-expense-bg:      #fdeeed;
+  --card-expense-accent:  #e05252;
+  --card-remaining-bg:    #edfdf4;
+  --card-remaining-accent:#27ae7a;
+  /* Shadows */
+  --shadow-xs:            0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-sm:            0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md:            0 4px 16px rgba(0, 0, 0, 0.10);
+  /* Radius */
+  --radius-sm:            6px;
+  --radius-md:            10px;
+  --radius-lg:            14px;
+  /* Spacing scale */
+  --space-xs:             4px;
+  --space-sm:             8px;
+  --space-md:             16px;
+  --space-lg:             24px;
+  --space-xl:             32px;
+  --space-2xl:            48px;
+  /* Typography */
+  --font-family:          'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-xs:         11px;
+  --font-size-sm:         13px;
+  --font-size-base:       15px;
+  --font-size-md:         17px;
+  --font-size-lg:         20px;
+  --font-size-xl:         24px;
+  --font-size-2xl:        30px;
+  --line-height:          1.6;
+  /* Transitions */
+  --transition-fast:      150ms ease;
+  --transition-base:      220ms ease;
+  /* Max content width */
+  --max-width:            1140px;
+}
+/* =============================================================
+   2. RESET & BASE
+   ============================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+ul {
+  list-style: none;
+}
+img,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+/* =============================================================
+   3. TYPOGRAPHY
+   ============================================================= */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-color);
+}
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--space-lg);
+}
+.subsection-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-color);
+  margin-top: var(--space-lg);
+}
+/* =============================================================
+   4. LAYOUT
+   ============================================================= */
+.main-content {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+/* Two-column grid for form + chart (desktop only) */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+/* =============================================================
+   5. HEADER
+   ============================================================= */
+.site-header {
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-xs);
+}
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.app-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -0.02em;
+}
+.app-description {
+  font-size: var(--font-size-sm);
+  color: var(--muted-text-color);
+  margin-top: 2px;
+}
+/* =============================================================
+   5a. THEME TOGGLE BUTTON
+   ============================================================= */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-alt);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              color var(--transition-fast);
+}
+.btn-icon:hover {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+.btn-icon:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.theme-icon::before {
+  content: '☀';
+  font-size: 14px;
+  line-height: 1;
+}
+/* When dark mode is active, swap icon */
+[data-theme="dark"] .theme-icon::before {
+  content: '☽';
+}
+[data-theme="dark"] .theme-label {
+  /* Label text is updated by JS */
+}
+/* =============================================================
+   6. DASHBOARD
+   ============================================================= */
+.dashboard {
+  background-color: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+/* Initial Balance input row */
+.initial-balance-wrapper {
+  margin-bottom: var(--space-lg);
+}
+.initial-balance-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+.initial-balance-control .input-balance {
+  flex: 1;
+  min-width: 0;
+}
+/* Balance cards row */
+.balance-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+.balance-card {
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  border-left: 4px solid transparent;
+  transition: box-shadow var(--transition-base);
+}
+.balance-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+.balance-card--initial {
+  background-color: var(--card-initial-bg);
+  border-left-color: var(--card-initial-accent);
+}
+.balance-card--expense {
+  background-color: var(--card-expense-bg);
+  border-left-color: var(--card-expense-accent);
+}
+.balance-card--remaining {
+  background-color: var(--card-remaining-bg);
+  border-left-color: var(--card-remaining-accent);
+}
+.balance-card__label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+.balance-card__value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -0.02em;
+}
+.balance-card--remaining .balance-card__value {
+  color: var(--card-remaining-accent);
+}
+.balance-card--expense .balance-card__value {
+  color: var(--card-expense-accent);
+}
+/* =============================================================
+   7. FORM & INPUTS
+   ============================================================= */
+.form-section,
+.chart-section {
+  background-color: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+.form-group:last-of-type {
+  margin-bottom: 0;
+}
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.input-field {
+  width: 100%;
+  padding: 10px var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background-color var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+.input-field::placeholder {
+  color: var(--muted-text-color);
+}
+.input-field:hover {
+  border-color: var(--text-secondary);
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+.input-field:focus-visible {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+/* Select field custom arrow */
+.select-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5f7a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-md) center;
+  padding-right: calc(var(--space-md) * 2.5);
+  cursor: pointer;
+}
+/* Number & date input */
+input[type="number"],
+input[type="date"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+}
+/* Prefix wrapper (Rp) */
+.input-prefix-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+.input-prefix-wrapper:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+.currency-prefix {
+  padding: 10px var(--space-sm) 10px var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--muted-text-color);
+  background-color: var(--surface-alt);
+  border-right: 1px solid var(--border-color);
+  white-space: nowrap;
+  user-select: none;
+}
+.input-with-prefix {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.input-with-prefix:focus,
+.input-with-prefix:focus-visible {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+/* Inline form group (custom category input + button) */
+.form-group--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: 0;
+}
+.form-group--inline .input-field {
+  flex: 1;
+  min-width: 0;
+}
+/* Input error messages */
+.input-error {
+  font-size: var(--font-size-xs);
+  color: var(--danger-color);
+  min-height: 16px;
+  display: block;
+}
+/* Initial balance control currency prefix */
+.initial-balance-control .currency-prefix {
+  padding: 10px var(--space-sm) 10px var(--space-md);
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+.initial-balance-control .input-balance {
+  border-radius: 0;
+  border-left: none;
+}
+.initial-balance-control .input-balance:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+  z-index: 1;
+  position: relative;
+}
+/* =============================================================
+   8. CUSTOM CATEGORY
+   ============================================================= */
+.custom-category-section {
+  /* inherits from .form-section padding */
+}
+.category-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+.category-tag:hover {
+  background-color: var(--border-color);
+}
+.category-tag__delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 12px;
+  color: var(--muted-text-color);
+  transition: color var(--transition-fast),
+              background-color var(--transition-fast);
+  line-height: 1;
+}
+.category-tag__delete:hover {
+  color: var(--danger-color);
+  background-color: var(--card-expense-bg);
+}
+.category-tag__delete:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+/* =============================================================
+   9. CHART
+   ============================================================= */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+}
+.chart-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 280px;
+}
+#expense-chart {
+  max-width: 320px;
+  max-height: 320px;
+  width: 100% !important;
+  height: auto !important;
+}
+/* =============================================================
+   10. TRANSACTION HISTORY
+   ============================================================= */
+.history-section {
+  background-color: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+.history-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.history-header .section-title {
+  margin-bottom: 0;
+}
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+/* Transaction item — rendered by JS, styled here */
+.transaction-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 2px var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+  transition: background-color var(--transition-fast);
+}
+.transaction-item:last-child {
+  border-bottom: none;
+}
+.transaction-item:hover {
+  background-color: var(--surface-alt);
+  margin: 0 calc(-1 * var(--space-sm));
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+.transaction-item__name {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--text-color);
+  grid-column: 1;
+  grid-row: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.transaction-item__meta {
+  font-size: var(--font-size-xs);
+  color: var(--muted-text-color);
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.transaction-item__category {
+  display: inline-block;
+  padding: 2px var(--space-sm);
+  border-radius: 4px;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.transaction-item__amount {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--card-expense-accent);
+  grid-column: 2;
+  grid-row: 1;
+  text-align: right;
+  white-space: nowrap;
+}
+.transaction-item__delete {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--muted-text-color);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast),
+              border-color var(--transition-fast),
+              background-color var(--transition-fast);
+}
+.transaction-item__delete:hover {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+  background-color: var(--card-expense-bg);
+}
+.transaction-item__delete:focus-visible {
+  outline: 2px solid var(--danger-color);
+  outline-offset: 2px;
+}
+/* =============================================================
+   11. SORT CONTROLS
+   ============================================================= */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.sort-controls .form-label {
+  white-space: nowrap;
+  color: var(--muted-text-color);
+}
+.select-field--compact {
+  padding: 7px var(--space-xl) 7px var(--space-md);
+  font-size: var(--font-size-sm);
+  width: auto;
+  min-width: 0;
+}
+/* =============================================================
+   12. EMPTY STATES
+   ============================================================= */
+.empty-state {
+  text-align: center;
+  color: var(--muted-text-color);
+  font-size: var(--font-size-sm);
+  padding: var(--space-xl) var(--space-lg);
+  line-height: 1.6;
+}
+.empty-state--small {
+  padding: var(--space-md) 0;
+  text-align: left;
+  font-size: var(--font-size-xs);
+}
+/* =============================================================
+   13. BUTTONS
+   ============================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px var(--space-lg);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  line-height: 1;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              transform var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+/* Primary — filled */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:active {
+  background-color: var(--primary-active);
+}
+/* Secondary — outlined */
+.btn-secondary {
+  background-color: var(--surface-color);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+  background-color: var(--surface-alt);
+  border-color: var(--text-secondary);
+  color: var(--text-color);
+}
+/* Full-width */
+.btn-full {
+  width: 100%;
+  margin-top: var(--space-md);
+}
+/* =============================================================
+   14. FOOTER
+   ============================================================= */
+.site-footer {
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-md) var(--space-md);
+  text-align: center;
+}
+.footer-text {
+  font-size: var(--font-size-xs);
+  color: var(--muted-text-color);
+}
+/* =============================================================
+   15. UTILITIES
+   ============================================================= */
+/* Screen-reader only — visually hidden but accessible */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Prevent all horizontal overflow */
+html, body {
+  overflow-x: hidden;
+}
+/* =============================================================
+   16. RESPONSIVE — TABLET (768px)
+   ============================================================= */
+@media (min-width: 768px) {
+  .main-content {
+    padding: var(--space-xl) var(--space-xl);
+    gap: var(--space-xl);
+  }
+  .header-inner {
+    padding: var(--space-md) var(--space-xl);
+  }
+  .app-title {
+    font-size: var(--font-size-lg);
+  }
+  .balance-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .balance-card__value {
+    font-size: var(--font-size-2xl);
+  }
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  #expense-chart {
+    max-width: 280px;
+    max-height: 280px;
+  }
+  .history-header {
+    align-items: center;
+  }
+}
+/* =============================================================
+   17. RESPONSIVE — DESKTOP (1024px+)
+   ============================================================= */
+@media (min-width: 1024px) {
+  .main-content {
+    padding: var(--space-xl) var(--space-2xl);
+  }
+  .header-inner {
+    padding: var(--space-md) var(--space-2xl);
+  }
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .chart-container {
+    min-height: 340px;
+  }
+  #expense-chart {
+    max-width: 340px;
+    max-height: 340px;
+  }
+  .transaction-item {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+  }
+  .transaction-item__name {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .transaction-item__meta {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-start;
+  }
+  .transaction-item__amount {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .transaction-item__delete {
+    grid-column: 4;
+    grid-row: 1;
+    justify-self: auto;
+  }
+}
+/* =============================================================
+   18. RESPONSIVE — WIDE (1440px+)
+   ============================================================= */
+@media (min-width: 1440px) {
+  :root {
+    --max-width: 1280px;
+  }
+}
+/* =============================================================
+   19. DARK MODE
+   Apply via: <html data-theme="dark"> (set by JS)
+   ============================================================= */
+[data-theme="dark"] {
+  --bg-color:             #0f1117;
+  --surface-color:        #1a1d2e;
+  --surface-alt:          #242740;
+  --text-color:           #e8eaf6;
+  --text-secondary:       #9399b2;
+  --muted-text-color:     #5a5f7a;
+  --border-color:         #2e3250;
+  --border-focus:         #6a88ff;
+  --primary-color:        #6a88ff;
+  --primary-hover:        #5674f5;
+  --primary-active:       #4a64e8;
+  --danger-color:         #f07070;
+  --danger-hover:         #e05555;
+  --card-initial-bg:      #1e2240;
+  --card-initial-accent:  #6a88ff;
+  --card-expense-bg:      #2a1a1a;
+  --card-expense-accent:  #f07070;
+  --card-remaining-bg:    #162a22;
+  --card-remaining-accent:#3dc98a;
+  --shadow-xs:            0 1px 3px rgba(0, 0, 0, 0.30);
+  --shadow-sm:            0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md:            0 4px 16px rgba(0, 0, 0, 0.40);
+}
+/* Dark mode — select arrow icon (lighter stroke) */
+[data-theme="dark"] .select-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239399b2' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+/* Dark mode — date picker icon */
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
