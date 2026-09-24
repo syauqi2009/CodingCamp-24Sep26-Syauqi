@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Catat pengeluaran harian dan visualisasikan data keuangan Anda dengan mudah." />
+    <title>Expense &amp; Budget Visualizer</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ==================== HEADER ==================== -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="header-brand">
+          <h1 class="app-title">Expense &amp; Budget Visualizer</h1>
+          <p class="app-description">Catat pengeluaran harian dan pantau anggaran Anda secara visual.</p>
+        </div>
+        <button id="theme-toggle" class="btn btn-icon" type="button" aria-label="Toggle dark/light mode">
+          <span class="theme-icon" aria-hidden="true"></span>
+          <span class="theme-label">Dark Mode</span>
+        </button>
+      </div>
+    </header>
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+      <!-- ==================== DASHBOARD ==================== -->
+      <section class="dashboard" aria-labelledby="dashboard-heading">
+        <h2 id="dashboard-heading" class="section-title">Dashboard</h2>
+        <!-- Initial Balance Setting -->
+        <div class="initial-balance-wrapper">
+          <label for="initial-balance-input" class="form-label">Saldo Awal (Rp)</label>
+          <div class="initial-balance-control">
+            <span class="currency-prefix" aria-hidden="true">Rp</span>
+            <input
+              type="number"
+              id="initial-balance-input"
+              class="input-field input-balance"
+              placeholder="0"
+              min="0"
+              step="1000"
+              aria-label="Masukkan saldo awal dalam Rupiah"
+            />
+            <button id="save-initial-balance" class="btn btn-secondary" type="button">
+              Simpan
+            </button>
+          </div>
+          <span class="input-error" id="error-initial-balance" role="alert" aria-live="polite"></span>
+        </div>
+        <!-- Balance Summary Cards -->
+        <div class="balance-cards">
+          <div class="balance-card balance-card--initial">
+            <span class="balance-card__label">Saldo Awal</span>
+            <span id="initial-balance" class="balance-card__value">Rp 0</span>
+          </div>
+          <div class="balance-card balance-card--expense">
+            <span class="balance-card__label">Total Pengeluaran</span>
+            <span id="total-expense" class="balance-card__value">Rp 0</span>
+          </div>
+          <div class="balance-card balance-card--remaining">
+            <span class="balance-card__label">Sisa Saldo</span>
+            <span id="total-balance" class="balance-card__value">Rp 0</span>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== LAYOUT: FORM + CHART ==================== -->
+      <div class="content-grid">
+        <!-- ==================== ADD TRANSACTION FORM ==================== -->
+        <section class="form-section" aria-labelledby="form-heading">
+          <h2 id="form-heading" class="section-title">Tambah Transaksi</h2>
+          <form id="transaction-form" class="transaction-form" novalidate>
+            <!-- Transaction Name -->
+            <div class="form-group">
+              <label for="transaction-name" class="form-label">Nama Transaksi</label>
+              <input
+                type="text"
+                id="transaction-name"
+                name="transaction-name"
+                class="input-field"
+                placeholder="Contoh: Makan siang"
+                maxlength="100"
+                required
+                aria-required="true"
+              />
+              <span class="input-error" id="error-name" role="alert" aria-live="polite"></span>
+            </div>
+            <!-- Amount -->
+            <div class="form-group">
+              <label for="transaction-amount" class="form-label">Jumlah (Rp)</label>
+              <div class="input-prefix-wrapper">
+                <span class="currency-prefix" aria-hidden="true">Rp</span>
+                <input
+                  type="number"
+                  id="transaction-amount"
+                  name="transaction-amount"
+                  class="input-field input-with-prefix"
+                  placeholder="0"
+                  min="1"
+                  step="1"
+                  required
+                  aria-required="true"
+                />
+              </div>
+              <span class="input-error" id="error-amount" role="alert" aria-live="polite"></span>
+            </div>
+            <!-- Category -->
+            <div class="form-group">
+              <label for="transaction-category" class="form-label">Kategori</label>
+              <select
+                id="transaction-category"
+                name="transaction-category"
+                class="input-field select-field"
+                required
+                aria-required="true"
+              >
+                <option value="" disabled selected>Pilih kategori</option>
+                <optgroup label="Kategori Default" id="default-categories">
+                  <option value="Food">Food</option>
+                  <option value="Transportation">Transportation</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Education">Education</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Other">Other</option>
+                </optgroup>
+                <optgroup label="Kategori Kustom" id="custom-categories-group">
+                  <!-- Diisi oleh JS -->
+                </optgroup>
+              </select>
+              <span class="input-error" id="error-category" role="alert" aria-live="polite"></span>
+            </div>
+            <!-- Date -->
+            <div class="form-group">
+              <label for="transaction-date" class="form-label">Tanggal</label>
+              <input
+                type="date"
+                id="transaction-date"
+                name="transaction-date"
+                class="input-field"
+                required
+                aria-required="true"
+              />
+              <span class="input-error" id="error-date" role="alert" aria-live="polite"></span>
+            </div>
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary btn-full">
+              Tambah Transaksi
+            </button>
+          </form>
+          <!-- ==================== CUSTOM CATEGORY ==================== -->
+          <div class="custom-category-section" aria-labelledby="custom-category-heading">
+            <h3 id="custom-category-heading" class="subsection-title">Kategori Kustom</h3>
+            <form id="category-form" class="category-form" novalidate>
+              <div class="form-group form-group--inline">
+                <label for="custom-category" class="form-label visually-hidden">Nama Kategori Baru</label>
+                <input
+                  type="text"
+                  id="custom-category"
+                  name="custom-category"
+                  class="input-field"
+                  placeholder="Nama kategori baru"
+                  maxlength="50"
+                  required
+                  aria-required="true"
+                />
+                <button type="submit" class="btn btn-secondary">Tambah</button>
+              </div>
+              <span class="input-error" id="error-custom-category" role="alert" aria-live="polite"></span>
+            </form>
+            <ul id="custom-category-list" class="category-tag-list" aria-label="Daftar kategori kustom">
+              <!-- Diisi oleh JS -->
+            </ul>
+            <p id="custom-category-empty" class="empty-state empty-state--small">
+              Belum ada kategori kustom.
+            </p>
+          </div>
+        </section>
+        <!-- ==================== VISUAL CHART ==================== -->
+        <section class="chart-section" aria-labelledby="chart-heading">
+          <h2 id="chart-heading" class="section-title">Distribusi Pengeluaran</h2>
+          <div id="chart-container" class="chart-container">
+            <canvas
+              id="expense-chart"
+              aria-label="Pie chart distribusi pengeluaran per kategori"
+              role="img"
+            ></canvas>
+            <p id="chart-empty" class="empty-state">
+              Belum ada data pengeluaran untuk ditampilkan.
+            </p>
+          </div>
+        </section>
+      </div>
+      <!-- end .content-grid -->
+      <!-- ==================== TRANSACTION HISTORY ==================== -->
+      <section class="history-section" aria-labelledby="history-heading">
+        <div class="history-header">
+          <h2 id="history-heading" class="section-title">Riwayat Transaksi</h2>
+          <!-- Sort Controls -->
+          <div class="sort-controls">
+            <label for="sort-transactions" class="form-label">Urutkan:</label>
+            <select id="sort-transactions" class="input-field select-field select-field--compact">
+              <option value="date-desc">Tanggal: Terbaru</option>
+              <option value="date-asc">Tanggal: Terlama</option>
+              <option value="amount-desc">Nominal: Terbesar</option>
+              <option value="amount-asc">Nominal: Terkecil</option>
+              <option value="category-asc">Kategori: A-Z</option>
+              <option value="category-desc">Kategori: Z-A</option>
+            </select>
+          </div>
+        </div>
+        <!-- Transaction List -->
+        <ul id="transaction-list" class="transaction-list" aria-label="Daftar riwayat transaksi">
+          <!-- Diisi oleh JS -->
+        </ul>
+        <!-- Empty State -->
+        <p id="transaction-empty" class="empty-state">
+          Belum ada transaksi. Tambahkan transaksi pertama Anda di atas.
+        </p>
+      </section>
+    </main>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Expense &amp; Budget Visualizer &mdash; Data tersimpan di browser Anda.
+      </p>
+    </footer>
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
